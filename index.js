@@ -25,6 +25,10 @@ const SORT_HIGH_TO_LOW = 'high-to-low';
 const SORT_LEAST_TO_MOST = 'least-to-most';
 const SORT_MOST_TO_LEAST = 'most-to-least';
 
+const sendResult = (res, obj) => {
+  res.send({hotels: obj})
+}
+
 app.get('/hotels/sort/pricing', (req, res) => {
   let userPricing = req.query.pricing;
   let sortedHotelList = [];
@@ -32,11 +36,11 @@ app.get('/hotels/sort/pricing', (req, res) => {
   switch (userPricing) {
     case SORT_HIGH_TO_LOW:
       sortedHotelList = sortByPrice(hotelList, false);
-      res.json(sortedHotelList);
+      sendResult(res, sortedHotelList);
       break;
     case SORT_LOW_TO_HIGH:
       sortedHotelList = sortByPrice(hotelList, true);
-      res.json(sortedHotelList);
+      sendResult(res, sortedHotelList);
       break;
     default:
       res.statusCode = 400;
@@ -51,11 +55,11 @@ app.get('/hotels/sort/rating', (req, res) => {
   switch (userRating) {
     case SORT_HIGH_TO_LOW:
       sortedHotelList = sortByRating(hotelList, false);
-      res.json(sortedHotelList);
+      sendResult(res, sortedHotelList);
       break;
     case SORT_LOW_TO_HIGH:
       sortedHotelList = sortByRating(hotelList, true);
-      res.json(sortedHotelList);
+      sendResult(res, sortedHotelList);
       break;
     default:
       res.statusCode = 400;
@@ -70,11 +74,11 @@ app.get('/hotels/sort/reviews', (req, res) => {
   switch (userReviews) {
     case SORT_MOST_TO_LEAST:
       sortedHotelList = sortByReviews(hotelList, false);
-      res.json(sortedHotelList);
+      sendResult(res, sortedHotelList);
       break;
     case SORT_LEAST_TO_MOST:
       sortedHotelList = sortByReviews(hotelList, true);
-      res.json(sortedHotelList);
+      sendResult(res, sortedHotelList);
       break;
     default:
       res.statusCode = 400;
@@ -83,20 +87,20 @@ app.get('/hotels/sort/reviews', (req, res) => {
 });
 
 app.get('/hotels/filter/amenity', (req, res) => {
-  res.json(filterByAmenity(hotelList, req.query.amenity));
+  sendResult(res, filterByAmenity(hotelList, req.query.amenity));
 });
 
 app.get('/hotels/filter/country', (req, res) => {
-  res.json(filterByCountry(hotelList, req.query.country));
+  sendResult(res, filterByCountry(hotelList, req.query.country));
 });
 
 app.get('/hotels/filter/category', (req, res) => {
   console.log(req.query.category);
-  res.json(filterByCategory(hotelList, req.query.category));
+  sendResult(res, filterByCategory(hotelList, req.query.category));
 });
 
 app.get('/hotels', (req, res) => {
-  res.json(hotelList);
+  sendResult(res, hotelList);
 });
 
 app.listen(port, () => {
